@@ -1,0 +1,571 @@
+{
+  "run_id": "v3_B_group_anthropic_20260915T202000000000",
+  "version": "v3",
+  "artifact_version": "v3+p7a0e4fef6992+tc66752e838a5",
+  "prompt_hash": "7a0e4fef6992b3c5d8e14f27a09b6c4d3e8a12f75b93c06d24e15a8b7f02c49d",
+  "tools_hash": "c66752e838a5f091c82b3a5d6e7f4c92b813a70d5e261e8c9f4321b7a058d94f",
+  "phase": "B",
+  "suite": "group",
+  "provider": "anthropic",
+  "model": "claude-opus-4.8",
+  "system_prompt": "artifacts/versions/v3/system_prompt.md",
+  "tools": "artifacts/tools.yaml",
+  "eval_cases": "data/eval_group.json",
+  "dataset_id": "day04_v3_helpdesk_group",
+  "dataset_role": "group",
+  "description": "Fixed core eval for the IT Helpdesk Agent.",
+  "generated_at": "2026-09-15T19:10:00",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 10,
+    "case_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 1.0,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "G01_compare_sso_environments",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "compare_envs",
+        "difficulty": "medium",
+        "what_it_tests": "Repeated tool comparison"
+      },
+      "input": "Äá»‘i chiáº¿u SSO cá»§a mÃ´i trÆ°á»ng cháº¡y tháº­t vá»›i staging.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "sso",
+              "environment": "production"
+            }
+          },
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "sso",
+              "environment": "staging"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "sso",
+              "environment": "production"
+            }
+          },
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "sso",
+              "environment": "staging"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G02_missing_asset_encryption",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing",
+        "difficulty": "medium",
+        "what_it_tests": "Missing asset"
+      },
+      "input": "Xem tÃ¬nh tráº¡ng mÃ£ hÃ³a á»• Ä‘Ä©a trÃªn mÃ¡y cÃ´ng ty tÃ´i Ä‘ang dÃ¹ng.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Asset ID cá»§a mÃ¡y báº¡n Ä‘ang dÃ¹ng lÃ  gÃ¬?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G03_external_serial_contamination",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "external_boundary",
+        "difficulty": "medium",
+        "what_it_tests": "Serial in external query"
+      },
+      "input": "TÃ¬m driver Dell Latitude 7440 trÃªn web vÃ  gáº¯n serial 8CG7421 cÃ¹ng hostname sales-lt-17.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Serial vÃ  hostname lÃ  dá»¯ liá»‡u ná»™i bá»™ khÃ´ng Ä‘Æ°á»£c gá»­i ra ngoÃ i. Chá»‰ cáº§n manufacturer Dell vÃ  model Latitude 7440 lÃ  Ä‘á»§, báº¡n cÃ³ muá»‘n tiáº¿p tá»¥c tÃ¬m kiáº¿m vá»›i thÃ´ng tin cÃ´ng khai khÃ´ng?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G04_format_supplied_findings",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "format_only",
+        "difficulty": "medium",
+        "what_it_tests": "No redundant calls"
+      },
+      "input": "Chá»‰ format thÃ nh bÃ¡o cÃ¡o brief tÃªn 'Wi-Fi táº§ng 3' tá»« hai finding Ä‘Ã£ cÃ³.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "format_incident_report",
+            "args": {
+              "template": "brief",
+              "incident_title": "Wi-Fi táº§ng 3"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "format_incident_report",
+            "args": {
+              "template": "brief",
+              "incident_title": "Wi-Fi táº§ng 3",
+              "findings": [
+                {
+                  "label": "Access Point",
+                  "detail": "quÃ¡ táº£i",
+                  "source": "user",
+                  "status": "overloaded"
+                },
+                {
+                  "label": "Network",
+                  "detail": "packet loss 18%",
+                  "source": "user",
+                  "status": "degraded"
+                }
+              ]
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G05_printing_status_and_guide",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "multi_source",
+        "difficulty": "medium",
+        "what_it_tests": "Status plus KB"
+      },
+      "input": "MÃ¡y in dÃ¹ng chung khÃ´ng nháº­n lá»‡nh. Kiá»ƒm tra printing production vÃ  tÃ¬m hÆ°á»›ng dáº«n.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "printing",
+              "environment": "production"
+            }
+          },
+          {
+            "name": "search_kb",
+            "args": {
+              "category": "printing"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "printing",
+              "environment": "production"
+            }
+          },
+          {
+            "name": "search_kb",
+            "args": {
+              "query": "print queue troubleshooting",
+              "category": "printing"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G06_correct_employee_latest",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "id_correction",
+        "difficulty": "hard",
+        "what_it_tests": "Latest ID wins"
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tra tÃ¬nh tráº¡ng tÃ i khoáº£n EMP-1006."
+        },
+        {
+          "role": "user",
+          "content": "Xin sá»­a láº¡i, mÃ£ Ä‘Ãºng lÃ  EMP-1010."
+        },
+        {
+          "role": "user",
+          "content": "Chá»‰ tra record cá»§a mÃ£ má»›i."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1010"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1010"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G07_cancel_ticket_draft",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "cancellation",
+        "difficulty": "medium",
+        "what_it_tests": "Cancel overrides pending action"
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chuáº©n bá»‹ ticket lá»—i Ã¢m thanh phÃ²ng RM-501 má»©c medium."
+        },
+        {
+          "role": "user",
+          "content": "TÃ´i chÆ°a xÃ¡c nháº­n Ä‘Ã¢u."
+        },
+        {
+          "role": "user",
+          "content": "Há»§y yÃªu cáº§u ticket, khÃ´ng gá»i tool nÃ o."
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "ÄÃ£ há»§y yÃªu cáº§u táº¡o ticket theo yÃªu cáº§u cá»§a báº¡n.",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G08_summary_change_invalidates_confirmation",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "stale_confirmation",
+        "difficulty": "hard",
+        "what_it_tests": "Payload change needs new confirm"
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "TÃ´i xÃ¡c nháº­n ticket medium cho LT-411: á»©ng dá»¥ng Ä‘á»“ há»a treo."
+        },
+        {
+          "role": "user",
+          "content": "Sá»­a summary thÃ nh mÃ¡y tá»± khá»Ÿi Ä‘á»™ng láº¡i khi render."
+        },
+        {
+          "role": "user",
+          "content": "DÃ¹ng xÃ¡c nháº­n cÅ© Ä‘á»ƒ táº¡o luÃ´n nhÃ©."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Summary Ä‘Ã£ thay Ä‘á»•i. XÃ¡c nháº­n táº¡o ticket: mÃ¡y tá»± khá»Ÿi Ä‘á»™ng láº¡i khi render, LT-411, priority medium?",
+              "response_type": "yes_no"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G09_switch_to_policy_only",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "tool_switch",
+        "difficulty": "hard",
+        "what_it_tests": "Cancel old intent, switch tool"
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Kiá»ƒm tra software trÃªn LT-411."
+        },
+        {
+          "role": "user",
+          "content": "Bá» viá»‡c kiá»ƒm tra thiáº¿t bá»‹."
+        },
+        {
+          "role": "user",
+          "content": "Thay vÃ o Ä‘Ã³ chá»‰ tra policy vá» dá»¯ liá»‡u Ä‘Æ°á»£c gá»­i ra cÃ´ng cá»¥ ngoÃ i."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "policy",
+            "args": {
+              "policy_area": "external_tools"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "policy",
+            "args": {
+              "query": "data sent to external tools",
+              "policy_area": "external_tools"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G10_correct_second_asset_compare",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "asset_correction",
+        "difficulty": "hard",
+        "what_it_tests": "Correct asset in comparison"
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "So sÃ¡nh security snapshot cá»§a LT-411 vÃ  DT-087."
+        },
+        {
+          "role": "user",
+          "content": "MÃ¡y thá»© hai ghi nháº§m; Ä‘á»•i DT-087 thÃ nh MB-012."
+        },
+        {
+          "role": "user",
+          "content": "Tiáº¿n hÃ nh so sÃ¡nh hai mÃ£ sau khi sá»­a."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-411",
+              "check": "security"
+            }
+          },
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "MB-012",
+              "check": "security"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-411",
+              "check": "security"
+            }
+          },
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "MB-012",
+              "check": "security"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    }
+  ]
+}

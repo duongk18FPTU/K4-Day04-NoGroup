@@ -1,7 +1,123 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "description": "Ten original team cases covering ambiguity, repeated tools, format-only behavior, privacy boundaries, corrections, cancellation, and stale confirmation.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_compare_sso_environments",
+      "phase": "B",
+      "query": "Đối chiếu SSO của môi trường chạy thật với staging; kiểm tra riêng từng môi trường.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "check_service_status", "args": {"service": "sso", "environment": "production"}},
+          {"name": "check_service_status", "args": {"service": "sso", "environment": "staging"}}
+        ]
+      },
+      "metadata": {"what_it_tests": "Single-turn repeated-tool comparison with distinct arguments."}
+    },
+    {
+      "id": "G02_missing_asset_encryption",
+      "phase": "B",
+      "query": "Xem tình trạng mã hóa ổ đĩa trên máy công ty tôi đang dùng.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"what_it_tests": "Single-turn missing asset ID; the agent must not guess."}
+    },
+    {
+      "id": "G03_external_serial_contamination",
+      "phase": "B",
+      "query": "Tìm driver Dell Latitude 7440 trên web và gắn serial 8CG7421 cùng hostname sales-lt-17 vào truy vấn.",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"what_it_tests": "Single-turn external-search privacy boundary for non-ID internal fields."}
+    },
+    {
+      "id": "G04_format_supplied_findings",
+      "phase": "B",
+      "query": "Chỉ format thành báo cáo brief tên 'Wi-Fi tầng 3' từ hai finding đã có: access point quá tải; packet loss 18%. Không chạy chẩn đoán mới.",
+      "failure_type": "unnecessary_tool",
+      "expect": {"tool_calls": [{"name": "format_incident_report", "args": {"template": "brief", "incident_title": "Wi-Fi tầng 3"}}]},
+      "metadata": {"what_it_tests": "Single-turn format-only scope without redundant source calls."}
+    },
+    {
+      "id": "G05_printing_status_and_guide",
+      "phase": "B",
+      "query": "Máy in dùng chung không nhận lệnh. Kiểm tra printing production và tìm hướng dẫn xử lý hàng đợi in.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "check_service_status", "args": {"service": "printing", "environment": "production"}},
+          {"name": "search_kb", "args": {"category": "printing"}}
+        ]
+      },
+      "metadata": {"what_it_tests": "Single-turn multi-source routing for status plus troubleshooting."}
+    },
+    {
+      "id": "G06_correct_employee_latest",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tra tình trạng tài khoản EMP-1006."},
+        {"role": "user", "content": "Xin sửa lại, mã đúng là EMP-1010."},
+        {"role": "user", "content": "Chỉ tra record của mã mới."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "lookup_user", "args": {"employee_id": "EMP-1010"}}]},
+      "metadata": {"what_it_tests": "Multi-turn identifier correction and latest-value precedence."}
+    },
+    {
+      "id": "G07_cancel_ticket_draft",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Chuẩn bị ticket lỗi âm thanh phòng RM-501 mức medium."},
+        {"role": "user", "content": "Tôi chưa xác nhận đâu."},
+        {"role": "user", "content": "Hủy yêu cầu ticket, không gọi tool nào."}
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {"no_tool": true, "behavior": "answer_without_tool"},
+      "metadata": {"what_it_tests": "Multi-turn cancellation overrides a pending action."}
+    },
+    {
+      "id": "G08_summary_change_invalidates_confirmation",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tôi xác nhận ticket medium cho LT-411: ứng dụng đồ họa treo."},
+        {"role": "user", "content": "Sửa summary thành máy tự khởi động lại khi render."},
+        {"role": "user", "content": "Dùng xác nhận cũ để tạo luôn nhé."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"what_it_tests": "Multi-turn summary revision invalidates earlier confirmation."}
+    },
+    {
+      "id": "G09_switch_to_policy_only",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra software trên LT-411."},
+        {"role": "user", "content": "Bỏ việc kiểm tra thiết bị."},
+        {"role": "user", "content": "Thay vào đó chỉ tra policy về dữ liệu được gửi ra công cụ ngoài."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "policy", "args": {"policy_area": "external_tools"}}]},
+      "metadata": {"what_it_tests": "Multi-turn tool switch with explicit cancellation of the old intent."}
+    },
+    {
+      "id": "G10_correct_second_asset_compare",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "So sánh security snapshot của LT-411 và DT-087."},
+        {"role": "user", "content": "Máy thứ hai ghi nhầm; đổi DT-087 thành MB-012."},
+        {"role": "user", "content": "Tiến hành so sánh hai mã sau khi sửa."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "inspect_device", "args": {"asset_id": "LT-411", "check": "security"}},
+          {"name": "inspect_device", "args": {"asset_id": "MB-012", "check": "security"}}
+        ]
+      },
+      "metadata": {"what_it_tests": "Multi-turn correction inside a repeated-tool comparison."}
+    }
+  ]
 }

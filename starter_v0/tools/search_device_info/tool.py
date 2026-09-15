@@ -23,6 +23,13 @@ QUERY_LABELS = {
     "compatibility": "hardware and operating system compatibility",
 }
 INTERNAL_IDENTIFIER = re.compile(r"\b(?:LT|DT|MB|PR|RM|EMP)-\d+\b", re.IGNORECASE)
+RESTRICTED_EXTERNAL_CONTEXT = re.compile(
+    r"\b(?:serial(?:\s+number)?|s/n|service\s+tag|host(?:name|\s+name)?|ip(?:\s+address)?|"
+    r"location|assigned\s+user|diagnostic(?:s|\s+log)?|ticket|password|passwd|token|"
+    r"api[ _-]?key|mfa|otp|recovery[ _-]?code)\b",
+    re.IGNORECASE,
+)
+IP_ADDRESS = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
 
 
 def _domain(url: str) -> str:
@@ -62,11 +69,16 @@ def search_device_info(
         return {"tool": "search_device_info", "error": "missing_public_product_identity"}
     if len(manufacturer_value) > 80 or len(model_value) > 160:
         return {"tool": "search_device_info", "error": "public_product_identity_too_long"}
-    if INTERNAL_IDENTIFIER.search(f"{manufacturer_value} {model_value}"):
+    external_identity = f"{manufacturer_value} {model_value}"
+    if (
+        INTERNAL_IDENTIFIER.search(external_identity)
+        or RESTRICTED_EXTERNAL_CONTEXT.search(external_identity)
+        or IP_ADDRESS.search(external_identity)
+    ):
         return {
             "tool": "search_device_info",
-            "error": "restricted_internal_identifier",
-            "message": "Remove asset and employee identifiers before external search.",
+            "error": "restricted_external_data",
+            "message": "Provide only a clean public manufacturer and model; remove all internal identifiers and context.",
         }
     if query_type_value not in QUERY_LABELS:
         return {"tool": "search_device_info", "error": "invalid_query_type", "query_type": query_type_value}

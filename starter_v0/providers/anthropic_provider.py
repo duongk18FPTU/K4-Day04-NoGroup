@@ -41,7 +41,8 @@ class AnthropicProvider:
         default_model: str = "claude-haiku-4-5-20251001",
     ) -> None:
         self.api_key_env = api_key_env
-        self.default_model = default_model
+        # Allow env override for model (e.g. ANTHROPIC_MODEL=claude-opus-4.8)
+        self.default_model = os.getenv("ANTHROPIC_MODEL") or default_model
 
     def complete(
         self,
@@ -66,7 +67,6 @@ class AnthropicProvider:
             "model": model or self.default_model,
             "messages": chat_messages,
             "max_tokens": 1024,
-            "temperature": temperature,
         }
         if system:
             kwargs["system"] = system
@@ -76,7 +76,11 @@ class AnthropicProvider:
             if tool_choice == "required":
                 kwargs["tool_choice"] = {"type": "any"}
 
-        resp = Anthropic(api_key=api_key).messages.create(**kwargs)
+        base_url = os.getenv("ANTHROPIC_BASE_URL")
+        client_kwargs: dict[str, Any] = {"api_key": api_key}
+        if base_url:
+            client_kwargs["base_url"] = base_url
+        resp = Anthropic(**client_kwargs).messages.create(**kwargs)
         text_parts: list[str] = []
         calls: list[ToolCall] = []
         for block in resp.content:

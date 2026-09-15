@@ -10,6 +10,7 @@ from typing import Any
 from env_loader import load_lab_env
 from providers import make_provider
 from providers.base import ToolCall
+from security import redact_sensitive_values
 from tools import TOOL_FUNCTIONS, load_tool_declarations, to_openai_tools
 from versioning import artifact_version_dict, build_artifact_version
 
@@ -207,16 +208,20 @@ def main() -> None:
             break
 
         turn_index += 1
+        safe_user_text, sensitive_input_redacted = redact_sensitive_values(user_text)
+        if sensitive_input_redacted:
+            print("[safety] Credential-like value redacted before provider call and transcript write.")
         messages = [
             {"role": "system", "content": system_prompt},
             *trim_history(history, args.history_window),
-            {"role": "user", "content": user_text},
+            {"role": "user", "content": safe_user_text},
         ]
 
         turn_record: dict[str, Any] = {
             "turn_index": turn_index,
             "started_at": now_iso(),
-            "user": user_text,
+            "user": safe_user_text,
+            "sensitive_input_redacted": sensitive_input_redacted,
             "status": "started",
             "assistant_text": None,
             "rounds": [],
@@ -234,7 +239,7 @@ def main() -> None:
             turn_record.update(result)
             assistant_text = result["assistant_text"]
             print(f"\nAgent> {assistant_text}")
-            history.append({"role": "user", "content": user_text})
+            history.append({"role": "user", "content": safe_user_text})
             history.append({"role": "assistant", "content": assistant_text})
         except Exception as exc:
             turn_record.update({

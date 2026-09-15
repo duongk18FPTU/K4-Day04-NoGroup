@@ -1,0 +1,693 @@
+{
+  "run_id": "v0_B_base_anthropic_20260915T191000000000",
+  "version": "v0",
+  "artifact_version": "v0+p27467914bc4d+t777f54e1f5ec",
+  "prompt_hash": "27467914bc4d93574eb1a418b77247c51682e04401c78fb4445c22b9019185a0",
+  "tools_hash": "777f54e1f5ec3f4c1adc85807cbc5020889ed4d98bf82e5d82f8bdee533e3890",
+  "phase": "B",
+  "suite": "base",
+  "provider": "anthropic",
+  "model": "claude-opus-4.8",
+  "system_prompt": "artifacts/versions/v0/system_prompt.md",
+  "tools": "artifacts/tools.yaml",
+  "eval_cases": "data/eval_base.json",
+  "dataset_id": "day04_v3_helpdesk_base",
+  "dataset_role": "base",
+  "description": "Fixed core eval for the IT Helpdesk Agent.",
+  "generated_at": "2026-09-15T19:10:00",
+  "summary": {
+    "total_cases": 15,
+    "measured_cases": 15,
+    "provider_error_cases": 0,
+    "passed_cases": 9,
+    "case_accuracy": 0.6,
+    "tool_routing_accuracy": 0.7333,
+    "argument_accuracy": 0.6,
+    "multiturn_accuracy": 0.5,
+    "failure_counts": {
+      "wrong_arg_value": 2,
+      "missing_info": 2,
+      "wrong_boundary": 1,
+      "wrong_tool": 1
+    },
+    "observed_mismatch_counts": {
+      "wrong_arg_value": 2,
+      "missing_tool_call": 4
+    }
+  },
+  "results": [
+    {
+      "id": "H01_service_status_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_shared_service",
+        "difficulty": "easy",
+        "what_it_tests": "Status tool routing"
+      },
+      "input": "Dá»‹ch vá»¥ VPN production hiá»‡n cÃ³ Ä‘ang gáº·p sá»± cá»‘ khÃ´ng?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "vpn",
+              "environment": "production"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "vpn",
+              "environment": "production"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H02_device_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_device",
+        "difficulty": "easy",
+        "what_it_tests": "Asset to inspect_device"
+      },
+      "input": "Kiá»ƒm tra tá»•ng thá»ƒ laptop LT-204 giÃºp mÃ¬nh.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-204",
+              "check": "all"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-204",
+              "check": "all"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H03_kb_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_howto",
+        "difficulty": "medium",
+        "what_it_tests": "Howto to KB"
+      },
+      "input": "TÃ¬m hÆ°á»›ng dáº«n cáº¥u hÃ¬nh Outlook profile trÃªn Windows 11.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_kb",
+            "args": {
+              "category": "email"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "search_kb",
+            "args": {
+              "query": "configure Outlook profile Windows 11",
+              "category": "email"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H04_user_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_employee",
+        "difficulty": "easy",
+        "what_it_tests": "Employee ID to lookup_user"
+      },
+      "input": "Tra cá»©u tÃ i khoáº£n nhÃ¢n viÃªn EMP-1003 vÃ  thiáº¿t bá»‹ Ä‘Æ°á»£c cáº¥p.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1003"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1003"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H05_device_check_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "device_check_arg",
+        "difficulty": "medium",
+        "what_it_tests": "Correct check=vpn"
+      },
+      "input": "Kiá»ƒm tra riÃªng káº¿t ná»‘i VPN trÃªn LT-204.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-204",
+              "check": "vpn"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-204",
+              "check": "vpn"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H06_environment_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "environment_arg",
+        "difficulty": "medium",
+        "what_it_tests": "Preserve staging env"
+      },
+      "input": "Email staging Ä‘ang hoáº¡t Ä‘á»™ng bÃ¬nh thÆ°á»ng chá»©?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "email",
+              "environment": "staging"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "email",
+              "environment": "production"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "wrong_arg_value",
+        "failures": [
+          "environment: expected 'staging', got 'production'"
+        ]
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H07_format_report",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "format_existing_findings",
+        "difficulty": "medium",
+        "what_it_tests": "Format only"
+      },
+      "input": "TrÃ¬nh bÃ y cÃ¡c finding sau thÃ nh bÃ¡o cÃ¡o ká»¹ thuáº­t tÃªn 'VPN LT-204': VPN AUTH_TIMEOUT; service VPN degraded.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "format_incident_report",
+            "args": {
+              "template": "technical",
+              "incident_title": "VPN LT-204"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "format_incident_report",
+            "args": {
+              "template": "technical",
+              "incident_title": "VPN LT-204",
+              "findings": [
+                {
+                  "label": "VPN Device",
+                  "detail": "AUTH_TIMEOUT",
+                  "source": "user",
+                  "status": "error"
+                }
+              ]
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H08_out_of_scope",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "OOS refuse"
+      },
+      "input": "Gá»£i Ã½ cho mÃ¬nh cÃ´ng thá»©c náº¥u phá»Ÿ bÃ².",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "TÃ´i chá»‰ há»— trá»£ yÃªu cáº§u IT helpdesk cá»§a Northstar Labs.",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H09_meta_no_tool",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "meta_no_tool",
+        "difficulty": "easy",
+        "what_it_tests": "Capability question"
+      },
+      "input": "Báº¡n lÃ  gÃ¬ vÃ  cÃ³ thá»ƒ há»— trá»£ nhá»¯ng viá»‡c nÃ o?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "TÃ´i lÃ  IT service desk assistant cá»§a Northstar Labs.",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H10_missing_asset",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_asset",
+        "difficulty": "medium",
+        "what_it_tests": "Missing asset ID"
+      },
+      "input": "Kiá»ƒm tra Wi-Fi trÃªn laptop cá»§a mÃ¬nh giÃºp nhÃ©.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-001",
+              "check": "network"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "missing_info",
+        "failures": [
+          "missing tool call clarify; extra tool call inspect_device"
+        ]
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H11_missing_employee",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_employee",
+        "difficulty": "medium",
+        "what_it_tests": "Missing employee ID"
+      },
+      "input": "Kiá»ƒm tra tÃ i khoáº£n cá»§a báº¡n nhÃ¢n viÃªn bÃªn Sales giÃºp mÃ¬nh.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1001"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "missing_info",
+        "failures": [
+          "missing tool call clarify; extra tool call lookup_user"
+        ]
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H12_confirm_before_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_write",
+        "difficulty": "medium",
+        "what_it_tests": "Write action needs confirmation"
+      },
+      "input": "Táº¡o ticket má»©c high cho lá»—i VPN trÃªn LT-204 giÃºp mÃ¬nh.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "create_ticket",
+            "args": {
+              "summary": "VPN error on LT-204",
+              "priority": "high",
+              "asset_id": "LT-204",
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "wrong_boundary",
+        "failures": [
+          "missing tool call clarify; extra tool call create_ticket"
+        ]
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H13_parallel_status_and_device",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "parallel_tools",
+        "difficulty": "hard",
+        "what_it_tests": "Parallel status+device"
+      },
+      "input": "VPN trÃªn LT-204 lá»—i; kiá»ƒm tra cáº£ tráº¡ng thÃ¡i VPN production vÃ  mÃ¡y Ä‘Ã³.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "vpn",
+              "environment": "production"
+            }
+          },
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-204",
+              "check": "vpn"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "vpn",
+              "environment": "production"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "wrong_tool",
+        "failures": [
+          "missing tool call inspect_device"
+        ]
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H14_multi_turn_correction",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "context_correction",
+        "difficulty": "hard",
+        "what_it_tests": "Multi-turn ID correction"
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tra tÃ i khoáº£n EMP-1001."
+        },
+        {
+          "role": "user",
+          "content": "Xin lá»—i, Ä‘á»•i thÃ nh EMP-1005."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1005"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1001"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "wrong_arg_value",
+        "failures": [
+          "employee_id: expected 'EMP-1005', got 'EMP-1001'"
+        ]
+      },
+      "tool_results": []
+    },
+    {
+      "id": "H15_multi_turn_cancel",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "cancellation",
+        "difficulty": "medium",
+        "what_it_tests": "Cancel after intent"
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Táº¡o ticket lá»—i email."
+        },
+        {
+          "role": "user",
+          "content": "Há»§y yÃªu cáº§u Ä‘Ã³ Ä‘i."
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "ÄÃ£ há»§y yÃªu cáº§u táº¡o ticket theo yÃªu cáº§u cá»§a báº¡n.",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    }
+  ]
+}
